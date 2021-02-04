@@ -1,6 +1,7 @@
 
 import protocol.http.*;
 import lombok.extern.slf4j.Slf4j;
+import protocol.telnet.TelnetServer;
 
 import java.util.Scanner;
 import java.util.concurrent.*;
@@ -23,6 +24,7 @@ public class Main {
         serverThreadPool.prestartAllCoreThreads();
         log.info("serverThreadPool is running");
         HttpServer httpServer = new HttpServer(HTTP_PORT);
+        TelnetServer telnetServer = new TelnetServer(TELNET_PORT);
         while (true) {
             //TODO 通过MQTT推送消息控制蜜罐启动
             Scanner scanner = new Scanner(System.in);
@@ -30,6 +32,10 @@ public class Main {
             if (str.equals("1")) {
                 serverThreadPool.execute(httpServer);
                 log.info("HttpServer is running");
+            }
+            if (str.equals("2")){
+                serverThreadPool.execute(telnetServer);
+                log.info("TelnetServer is running");
             }
         }
     }
