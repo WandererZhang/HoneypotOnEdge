@@ -65,11 +65,11 @@ public class HttpServerHandler extends SimpleChannelInboundHandler<HttpObject> {
                         logger.info(attr.getKey() + "=" + attrVal);
                     }
                 }
-                msg.setMethod("protocol/http/Get");
+                msg.setMethod("Http/Get");
             } else if (method.equals(HttpMethod.POST)) {
                 fullHttpRequest = (FullHttpRequest) httpObject;
                 dealWithContentType();
-                msg.setMethod("protocol/http/Post");
+                msg.setMethod("Http/Post");
             }
             Serializer serializer = new SerializerImpl();
             byte[] content = serializer.serialize(address.toString());

@@ -1,10 +1,7 @@
 package protocol.http;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelFutureListener;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
@@ -19,7 +16,7 @@ import org.slf4j.LoggerFactory;
  */
 public class HttpServer implements Runnable {
     private final int port;
-
+    private static Channel httpChannel;
     private static final Logger logger = LoggerFactory.getLogger(HttpServer.class);
 
     public HttpServer(int port) {
@@ -41,12 +38,21 @@ public class HttpServer implements Runnable {
                     .childHandler(new HttpServerInitializer());
             ChannelFuture f = b.bind(port).sync();
             logger.info("Netty protocol.http server listening on port " + port);
-            f.channel().closeFuture().addListener((ChannelFutureListener) future -> {
-                workerGroup.shutdownGracefully();
-                bossGroup.shutdownGracefully();
-            });
+            httpChannel = f.channel();
+            httpChannel.closeFuture().sync();
         } catch (InterruptedException e) {
             e.printStackTrace();
+        } finally {
+            workerGroup.shutdownGracefully();
+            bossGroup.shutdownGracefully();
+        }
+    }
+
+    public void closeServer() {
+        if (httpChannel != null) {
+            logger.info("close HttpServer");
+            httpChannel.close();
+            httpChannel = null;
         }
     }
 }
