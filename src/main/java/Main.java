@@ -1,6 +1,7 @@
 
 import protocol.http.*;
 import lombok.extern.slf4j.Slf4j;
+import protocol.mysql.MysqlServer;
 import protocol.redis.RedisServer;
 import protocol.telnet.TelnetServer;
 
@@ -19,6 +20,7 @@ public class Main {
     private static final int HTTP_PORT = 8080;
     private static final int TELNET_PORT = 23;
     private static final int REDIS_PORT = 6379;
+    private static final int MYSQL_PORT = 3306;
 
     public static void main(String[] args) {
         BlockingQueue<Runnable> workQueue = new ArrayBlockingQueue<>(CPU_NUM);
@@ -28,6 +30,7 @@ public class Main {
         HttpServer httpServer = new HttpServer(HTTP_PORT);
         TelnetServer telnetServer = new TelnetServer(TELNET_PORT);
         RedisServer redisServer = new RedisServer(REDIS_PORT);
+        MysqlServer mysqlServer = new MysqlServer(MYSQL_PORT);
         while (true) {
             //TODO 通过MQTT推送消息控制蜜罐启动
             Scanner scanner = new Scanner(System.in);
@@ -49,6 +52,12 @@ public class Main {
             }
             if (str.equals("6")){
                 redisServer.closeServer();
+            }
+            if (str.equals("7")){
+                serverThreadPool.execute(mysqlServer);
+            }
+            if (str.equals("8")){
+                mysqlServer.closeServer();
             }
         }
     }
