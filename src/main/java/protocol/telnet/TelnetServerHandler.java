@@ -4,6 +4,8 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import mqtt.AnalysisYaml;
+import mqtt.KubeedgeClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pojo.Message;
@@ -15,7 +17,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Telnet协议Handler
- * //TODO
  *
  * @author 78445
  */
@@ -25,8 +26,8 @@ public class TelnetServerHandler extends SimpleChannelInboundHandler<String> {
     private static final String EXIT = "exit";
     private static final Logger logger = LoggerFactory.getLogger(TelnetServerHandler.class);
 
-    private static Map<SocketAddress, String> clientStatus = new ConcurrentHashMap<>();
-    private static Map<SocketAddress, String> clientUser = new ConcurrentHashMap<>();
+    private static final Map<SocketAddress, String> clientStatus = new ConcurrentHashMap<>();
+    private static final Map<SocketAddress, String> clientUser = new ConcurrentHashMap<>();
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -34,7 +35,7 @@ public class TelnetServerHandler extends SimpleChannelInboundHandler<String> {
         msg.setAddress(ctx.channel().remoteAddress().toString());
         msg.setDate(new Date());
         msg.setMethod("Telnet");
-        //TODO 推送消息到mqtt
+        KubeedgeClient.getClientInstance().putData(AnalysisYaml.toJsonObject(msg).toString());
         logger.info(msg.toString());
         ctx.write("Ubuntu 16.04.7 LTS\r\n");
         ctx.write("ubuntu login: ");

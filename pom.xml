@@ -21,6 +21,12 @@
         <lombok.version>1.16.12</lombok.version>
         <fastjson.version>1.2.51</fastjson.version>
         <commons.codec.version>1.10</commons.codec.version>
+        <client.mqttv3.version>1.2.0</client.mqttv3.version>
+        <snakeyaml.version>1.13</snakeyaml.version>
+        <httpclient.version>4.5.2</httpclient.version>
+        <httpclient-cache.version>4.5.2</httpclient-cache.version>
+        <httpmime.version>4.5.2</httpmime.version>
+        <junit.version>4.12</junit.version>
     </properties>
 
         <dependencies>
@@ -71,6 +77,38 @@
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.eclipse.paho</groupId>
+                <artifactId>org.eclipse.paho.client.mqttv3</artifactId>
+                <version>${client.mqttv3.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.yaml</groupId>
+                <artifactId>snakeyaml</artifactId>
+                <version>${snakeyaml.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${httpclient.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient-cache</artifactId>
+                <version>${httpclient-cache.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpmime</artifactId>
+                <version>${httpmime.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+
         </dependencies>
 
     <build>

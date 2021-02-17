@@ -5,6 +5,8 @@ import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.redis.*;
 import io.netty.util.CharsetUtil;
+import mqtt.AnalysisYaml;
+import mqtt.KubeedgeClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pojo.Message;
@@ -21,7 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class RedisServerHandler extends ChannelDuplexHandler {
     private static final Logger logger = LoggerFactory.getLogger(RedisServerHandler.class);
-    private static Map<String, String> redisMap = new ConcurrentHashMap<>();
+    private static final Map<String, String> redisMap = new ConcurrentHashMap<>();
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
@@ -83,8 +85,8 @@ public class RedisServerHandler extends ChannelDuplexHandler {
         msg.setDate(new Date());
         msg.setAddress(incoming);
         msg.setMethod("Redis");
-        //TODO 推送消息到mqtt
-        System.out.println(msg);
+        KubeedgeClient.getClientInstance().putData(AnalysisYaml.toJsonObject(msg).toString());
+        logger.info(msg.toString());
     }
 
     @Override

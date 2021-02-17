@@ -3,6 +3,8 @@ package protocol.mysql;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import mqtt.AnalysisYaml;
+import mqtt.KubeedgeClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pojo.Message;
@@ -19,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class MysqlServerHandler extends ChannelInboundHandlerAdapter {
     private static final Logger logger = LoggerFactory.getLogger(MysqlServerHandler.class);
-    private static Map<SocketAddress, Boolean> statusMap = new ConcurrentHashMap<>();
+    private static final Map<SocketAddress, Boolean> statusMap = new ConcurrentHashMap<>();
     private static final byte[] GREETING_DATA = {
             0x5b, 0x00, 0x00, 0x00, 0x0a, 0x35, 0x2e, 0x37, 0x2e, 0x33, 0x33, 0x2d, 0x30, 0x75, 0x62, 0x75,
             0x6e, 0x74, 0x75, 0x30, 0x2e, 0x31, 0x36, 0x2e, 0x30, 0x34, 0x2e, 0x31, 0x00, 0x06, 0x00, 0x00,
@@ -56,8 +58,8 @@ public class MysqlServerHandler extends ChannelInboundHandlerAdapter {
         msg.setAddress(address.toString());
         msg.setMethod("Mysql");
         msg.setDate(new Date());
-        //TODO 推送消息到mqtt
-        System.out.println(msg);
+        KubeedgeClient.getClientInstance().putData(AnalysisYaml.toJsonObject(msg).toString());
+        logger.info(msg.toString());
     }
 
     @Override

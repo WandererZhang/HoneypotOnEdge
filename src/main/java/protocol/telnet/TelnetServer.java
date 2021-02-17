@@ -49,7 +49,7 @@ public class TelnetServer implements Runnable {
 
     public void closeServer() {
         if (telnetChannel != null) {
-            logger.info("close HttpServer");
+            logger.info("close TelnetServer");
             telnetChannel.close();
             telnetChannel = null;
         }

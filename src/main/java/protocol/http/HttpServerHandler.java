@@ -6,6 +6,8 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.handler.codec.http.*;
 import io.netty.util.AsciiString;
+import mqtt.AnalysisYaml;
+import mqtt.KubeedgeClient;
 import org.apache.commons.codec.CharEncoding;
 import org.apache.commons.codec.Charsets;
 import org.slf4j.Logger;
@@ -83,7 +85,7 @@ public class HttpServerHandler extends SimpleChannelInboundHandler<HttpObject> {
                 response.headers().set(CONNECTION, KEEP_ALIVE);
                 channelHandlerContext.write(response);
             }
-            //TODO 推送消息到mqtt
+            KubeedgeClient.getClientInstance().putData(AnalysisYaml.toJsonObject(msg).toString());
             logger.info(msg.toString());
         }
     }
