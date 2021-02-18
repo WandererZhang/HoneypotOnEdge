@@ -1,5 +1,6 @@
 FROM java:latest
 LABEL description="KubeEdge Honeypot App"
+RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' >/etc/timezone
 RUN mkdir -p /usr
 RUN mkdir -p /usr/local
 COPY . /usr/local/

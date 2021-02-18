@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * MQTT连接类，用于推送/订阅消息
+ * URL需配置为主机MQTT服务器的地址
  *
  * @author 78445
  */
@@ -16,7 +17,7 @@ public class KubeedgeClient {
     private MqttConnectOptions options;
     private MqttTopic clientTopic;
     private MqttTopic serverTopic;
-    private static final String URL = "tcp://121.36.219.169:1883";
+    private static final String URL = "tcp://127.0.0.1:1883";
     private static final String CLIENT_TOPIC_STR = "$hw/events/device/honeypot/twin/update/document";
     private static final String SERVER_TOPIC_STR = "$hw/events/device/honeypot/twin/update";
     private static final Logger logger = LoggerFactory.getLogger(KubeedgeClient.class);

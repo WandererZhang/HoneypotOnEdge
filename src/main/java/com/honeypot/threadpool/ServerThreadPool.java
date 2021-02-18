@@ -7,21 +7,18 @@ import com.honeypot.protocol.mysql.MysqlServer;
 import com.honeypot.protocol.redis.RedisServer;
 import com.honeypot.protocol.telnet.TelnetServer;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.Socket;
 import java.util.concurrent.*;
 
 /**
  * 服务器线程池
+ * 配置时,线程池核心线程数需大于开启的端口数
  *
  * @author 78445
  */
 @Slf4j
 public class ServerThreadPool {
-    private static final String HOST = "121.36.219.169";
     private static final int CPU_NUM = Runtime.getRuntime().availableProcessors();
-    private static final int CORE_POOL_SIZE = CPU_NUM;
+    private static final int CORE_POOL_SIZE = CPU_NUM * 2;
     private static final int MAXIMUM_POOL_SIZE = CPU_NUM * 2;
     private static final long KEEP_ALIVE_TIME = 10;
     private static final int HTTP_PORT = 8080;
@@ -52,7 +49,7 @@ public class ServerThreadPool {
     }
 
     public void httpServerOn() {
-        if (!portStatus.portIsAlive(HTTP_PORT) && !isPortUsing(HTTP_PORT)) {
+        if (!portStatus.portIsAlive(HTTP_PORT) ) {
             THREAD_POOL.execute(httpServer);
             portStatus.startPort(HTTP_PORT);
         }
@@ -66,7 +63,7 @@ public class ServerThreadPool {
     }
 
     public void redisServerOn() {
-        if (!portStatus.portIsAlive(REDIS_PORT) && !isPortUsing(REDIS_PORT)) {
+        if (!portStatus.portIsAlive(REDIS_PORT) ) {
             THREAD_POOL.execute(redisServer);
             portStatus.startPort(REDIS_PORT);
         }
@@ -80,7 +77,7 @@ public class ServerThreadPool {
     }
 
     public void mysqlServerOn() {
-        if (!portStatus.portIsAlive(MYSQL_PORT) && !isPortUsing(MYSQL_PORT)) {
+        if (!portStatus.portIsAlive(MYSQL_PORT) ) {
             THREAD_POOL.execute(mysqlServer);
             portStatus.startPort(MYSQL_PORT);
         }
@@ -94,7 +91,7 @@ public class ServerThreadPool {
     }
 
     public void telnetServerOn() {
-        if (!portStatus.portIsAlive(TELNET_PORT) && !isPortUsing(TELNET_PORT)) {
+        if (!portStatus.portIsAlive(TELNET_PORT)) {
             THREAD_POOL.execute(telnetServer);
             portStatus.startPort(TELNET_PORT);
         }
@@ -105,17 +102,5 @@ public class ServerThreadPool {
             telnetServer.closeServer();
             portStatus.endPort(TELNET_PORT);
         }
-    }
-
-    private static boolean isPortUsing(int port) {
-        boolean flag = false;
-        try {
-            InetAddress address = InetAddress.getByName(HOST);
-            Socket socket = new Socket(address, port);
-            flag = true;
-            log.info("Port: "+port+" is Using");
-        } catch (IOException ignored) {
-        }
-        return flag;
     }
 }

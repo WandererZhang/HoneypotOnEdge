@@ -60,6 +60,6 @@ public class PushCallback implements MqttCallback {
 
     @Override
     public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
-        logger.info("deliveryComplete :" + iMqttDeliveryToken.isComplete());
+        logger.info("deliveryStatus :" + iMqttDeliveryToken.isComplete());
     }
 }
