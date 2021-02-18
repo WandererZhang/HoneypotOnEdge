@@ -16,7 +16,7 @@ public class KubeedgeClient {
     private MqttConnectOptions options;
     private MqttTopic clientTopic;
     private MqttTopic serverTopic;
-    private static final String URL = "tcp://192.168.199.145:1883";
+    private static final String URL = "tcp://121.36.219.169:1883";
     private static final String CLIENT_TOPIC_STR = "$hw/events/device/honeypot/twin/update/document";
     private static final String SERVER_TOPIC_STR = "$hw/events/device/honeypot/twin/update";
     private static final Logger logger = LoggerFactory.getLogger(KubeedgeClient.class);

@@ -6,6 +6,9 @@ import lombok.Data;
 import com.honeypot.pojo.Message;
 import com.honeypot.pojo.PortStatus;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 /**
  * 解析json
  *
@@ -31,6 +34,7 @@ public class AnalysisYaml {
     }
 
     public static JSONObject toJsonObject(Message msg) {
+        DateFormat dateformat = new SimpleDateFormat("yyyyMMddHHmmss");
         PortStatus portStatus = PortStatus.getInstance();
         JSONObject jsonObject = new JSONObject(true);
         JSONObject twin = new JSONObject(true);
@@ -38,7 +42,7 @@ public class AnalysisYaml {
         jsonObject.put("timestamp", 0);
         twin.put("address", new Struct(msg.getAddress(), "Updated"));
         twin.put("method", new Struct(msg.getMethod(), "Updated"));
-        twin.put("date", new Struct(msg.getDate().toString(), "Updated"));
+        twin.put("date", new Struct(dateformat.format(msg.getDate()), "Updated"));
         twin.put("httpStatus", new Struct(portStatus.portValue(HTTP_PORT), "Updated"));
         twin.put("telnetStatus", new Struct(portStatus.portValue(TELNET_PORT), "Updated"));
         twin.put("redisStatus", new Struct(portStatus.portValue(REDIS_PORT), "Updated"));
