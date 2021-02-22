@@ -1,0 +1,54 @@
+apiVersion: devices.kubeedge.io/v1alpha1
+kind: Device
+metadata:
+  name: honeypot
+  labels:
+    description: 'honeypot'
+    manufacturer: 'test'
+spec:
+  deviceModelRef:
+    name: honeypot-model
+  nodeSelector:
+    nodeSelectorTerms:
+      - matchExpressions:
+        - key: ''
+          operator: In
+          values:
+            - edge
+status:
+  twins:
+    - propertyName: address
+      desired:
+        metadata:
+          type: string
+        value: ''
+    - propertyName: method
+      desired:
+        metadata:
+          type: string
+        value: ''
+    - propertyName: date
+      desired:
+        metadata:
+          type: string
+        value: ''
+    - propertyName: httpStatus
+      desired:
+        metadata:
+          type: string
+        value: 'OFF'
+    - propertyName: telnetStatus
+      desired:
+        metadata:
+          type: string
+        value: 'OFF'
+    - propertyName: redisStatus
+      desired:
+        metadata:
+          type: string
+        value: 'OFF'
+    - propertyName: mysqlStatus
+      desired:
+        metadata:
+          type: string
+        value: 'OFF'

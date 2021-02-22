@@ -1,0 +1,49 @@
+apiVersion: devices.kubeedge.io/v1alpha1
+kind: DeviceModel
+metadata:
+  name: honeypot-model
+  namespace: default
+spec:
+  properties:
+    - name: address
+      description: IP address collected from the edge device
+      type:
+        string:
+          accessMode: ReadOnly
+          defaultValue: ''
+    - name: method
+      description: Attack method collected from the edge device
+      type:
+        string:
+          accessMode: ReadOnly
+          defaultValue: ''
+    - name: date
+      description: Attack date collected from the edge device
+      type:
+        string:
+          accessMode: ReadOnly
+          defaultValue: ''
+    - name: httpStatus
+      description: HTTP honeypot Status collected from the edge device
+      type:
+        string:
+          accessMode: ReadWrite
+          defaultValue: 'OFF'
+    - name: telnetStatus
+      description: Telnet honeypot Status collected from the edge device
+      type:
+        string:
+          accessMode: ReadWrite
+          defaultValue: 'OFF'
+    - name: redisStatus
+      description: Redis honeypot Status collected from the edge device
+      type:
+        string:
+          accessMode: ReadWrite
+          defaultValue: 'OFF'
+    - name: mysqlStatus
+      description: MySql honeypot Status collected from the edge device
+      type:
+        string:
+          accessMode: ReadWrite
+          defaultValue: 'OFF'

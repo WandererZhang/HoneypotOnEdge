@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: honeypot-mapper
+  labels:
+    app: honeypot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: honeypot
+  template:
+    metadata:
+      labels:
+        app: honeypot
+    spec:
+      hostNetwork: true
+      nodeSelector:
+        node: edge
+      containers:
+        - name: honeypot
+          image: honeypot_edge-mapper:v1.0.0
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            privileged: true
