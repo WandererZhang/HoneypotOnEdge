@@ -1,5 +1,11 @@
 package com.honeypot.pojo;
 
+import com.honeypot.mqtt.AnalysisYaml;
+import com.honeypot.mqtt.KubeedgeClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -9,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author 78445
  */
 public class PortStatus {
+    private static final Logger logger = LoggerFactory.getLogger(PortStatus.class);
     private static final int HTTP_PORT = 8080;
     private static final int TELNET_PORT = 23;
     private static final int REDIS_PORT = 6379;
@@ -30,10 +37,12 @@ public class PortStatus {
 
     public void startPort(int port) {
         portStatusMap.put(port, true);
+        changeStatus();
     }
 
     public void endPort(int port) {
         portStatusMap.put(port, false);
+        changeStatus();
     }
 
     public boolean portIsAlive(int port) {
@@ -46,5 +55,14 @@ public class PortStatus {
         } else {
             return "OFF";
         }
+    }
+
+    public void changeStatus(){
+        Message message = new Message();
+        message.setAddress("edge");
+        message.setMethod("UpdateStatus");
+        message.setDate(new Date());
+        KubeedgeClient.getClientInstance().putData(AnalysisYaml.toJsonObject(message).toString());
+        logger.info("portStatus is changed");
     }
 }

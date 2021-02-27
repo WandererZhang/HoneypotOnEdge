@@ -1,12 +1,15 @@
 package com.honeypot.mqtt;
 
 import com.alibaba.fastjson.JSONObject;
+import com.honeypot.pojo.Message;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.honeypot.threadpool.ServerThreadPool;
+
+import java.util.Date;
 
 /**
  * 发布消息的回调类
@@ -31,10 +34,10 @@ public class PushCallback implements MqttCallback {
         logger.info("com.honeypot.mqtt-msg: " + new String(mqttMessage.getPayload()));
         JSONObject msg = JSONObject.parseObject(new String(mqttMessage.getPayload()));
         JSONObject twin = (JSONObject) msg.get("twin");
-        String httpStatus = (String) twin.getJSONObject("httpStatus").getJSONObject("current").getJSONObject("actual").get("value");
-        String redisStatus = (String) twin.getJSONObject("redisStatus").getJSONObject("current").getJSONObject("actual").get("value");
-        String telnetStatus = (String) twin.getJSONObject("telnetStatus").getJSONObject("current").getJSONObject("actual").get("value");
-        String mysqlStatus = (String) twin.getJSONObject("mysqlStatus").getJSONObject("current").getJSONObject("actual").get("value");
+        String httpStatus = (String) twin.getJSONObject("httpStatus").getJSONObject("current").getJSONObject("expected").get("value");
+        String redisStatus = (String) twin.getJSONObject("redisStatus").getJSONObject("current").getJSONObject("expected").get("value");
+        String telnetStatus = (String) twin.getJSONObject("telnetStatus").getJSONObject("current").getJSONObject("expected").get("value");
+        String mysqlStatus = (String) twin.getJSONObject("mysqlStatus").getJSONObject("current").getJSONObject("expected").get("value");
         ServerThreadPool serverThreadPool = ServerThreadPool.getInstance();
         if (ON.equals(httpStatus)) {
             serverThreadPool.httpServerOn();
